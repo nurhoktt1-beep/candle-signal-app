@@ -1,140 +1,70 @@
 const chartElement = document.getElementById("chart");
 
-let chart;
-let candleSeries;
+const chart = LightweightCharts.createChart(chartElement, {
+  width: chartElement.clientWidth,
+  height: chartElement.clientHeight,
 
-function createChart() {
-
-  chartElement.innerHTML = "";
-
-  chart = LightweightCharts.createChart(chartElement, {
-    width: chartElement.clientWidth,
-    height: chartElement.clientHeight,
-
-    layout: {
-      background: {
-        type: "solid",
-        color: "#101622"
-      },
-      textColor: "#b8c2d4"
+  layout: {
+    background: {
+      type: "solid",
+      color: "#101622"
     },
+    textColor: "#b8c2d4"
+  },
 
-    grid: {
-      vertLines: {
-        color: "#242d3d"
-      },
-      horzLines: {
-        color: "#242d3d"
-      }
+  grid: {
+    vertLines: {
+      color: "#242d3d"
     },
-
-    rightPriceScale: {
-      borderColor: "#293448"
-    },
-
-    timeScale: {
-      borderColor: "#293448",
-      timeVisible: true,
-      secondsVisible: false
+    horzLines: {
+      color: "#242d3d"
     }
-  });
+  },
 
-  candleSeries = chart.addSeries(
-    LightweightCharts.CandlestickSeries,
-    {
-      upColor: "#20e889",
-      downColor: "#ff5577",
-      borderUpColor: "#20e889",
-      borderDownColor: "#ff5577",
-      wickUpColor: "#20e889",
-      wickDownColor: "#ff5577"
-    }
-  );
+  rightPriceScale: {
+    borderColor: "#293448"
+  },
 
-  const data = [];
-
-  let price = 1.08500;
-
-  // Fixed minute-based timestamps
-  const startTime =
-    Math.floor(Date.now() / 60000) * 60 - (80 * 60);
-
-  for (let i = 0; i < 80; i++) {
-
-    const open = price;
-
-    const change =
-      (Math.random() - 0.5) * 0.0020;
-
-    const close = open + change;
-
-    const high =
-      Math.max(open, close) +
-      Math.random() * 0.0008;
-
-    const low =
-      Math.min(open, close) -
-      Math.random() * 0.0008;
-
-    data.push({
-      time: startTime + (i * 60),
-      open: Number(open.toFixed(5)),
-      high: Number(high.toFixed(5)),
-      low: Number(low.toFixed(5)),
-      close: Number(close.toFixed(5))
-    });
-
-    price = close;
+  timeScale: {
+    borderColor: "#293448",
+    timeVisible: true
   }
-
-  candleSeries.setData(data);
-
-  chart.timeScale().fitContent();
-}
-
-
-/* Market */
-
-document.getElementById("market").addEventListener(
-  "change",
-  function () {
-
-    document.getElementById("selectedMarket").textContent =
-      this.options[this.selectedIndex].text;
-
-    createChart();
-  }
-);
-
-
-/* Timeframe */
-
-document.getElementById("timeframe").addEventListener(
-  "change",
-  function () {
-
-    document.getElementById("selectedTimeframe").textContent =
-      this.options[this.selectedIndex].text;
-
-    createChart();
-  }
-);
-
-
-/* Resize */
-
-window.addEventListener("resize", function () {
-
-  if (chart) {
-    chart.resize(
-      chartElement.clientWidth,
-      chartElement.clientHeight
-    );
-  }
-
 });
 
+const candleSeries = chart.addSeries(
+  LightweightCharts.CandlestickSeries,
+  {
+    upColor: "#20e889",
+    downColor: "#ff5577",
+    borderUpColor: "#20e889",
+    borderDownColor: "#ff5577",
+    wickUpColor: "#20e889",
+    wickDownColor: "#ff5577"
+  }
+);
 
-/* Start */
+const candles = [
+  { time: 1755000000, open: 1.0840, high: 1.0860, low: 1.0830, close: 1.0855 },
+  { time: 1755000060, open: 1.0855, high: 1.0870, low: 1.0845, close: 1.0865 },
+  { time: 1755000120, open: 1.0865, high: 1.0875, low: 1.0840, close: 1.0845 },
+  { time: 1755000180, open: 1.0845, high: 1.0855, low: 1.0825, close: 1.0830 },
+  { time: 1755000240, open: 1.0830, high: 1.0850, low: 1.0820, close: 1.0845 },
+  { time: 1755000300, open: 1.0845, high: 1.0870, low: 1.0840, close: 1.0865 },
+  { time: 1755000360, open: 1.0865, high: 1.0880, low: 1.0850, close: 1.0875 },
+  { time: 1755000420, open: 1.0875, high: 1.0880, low: 1.0845, close: 1.0850 },
+  { time: 1755000480, open: 1.0850, high: 1.0860, low: 1.0825, close: 1.0835 },
+  { time: 1755000540, open: 1.0835, high: 1.0855, low: 1.0825, close: 1.0850 },
+  { time: 1755000600, open: 1.0850, high: 1.0880, low: 1.0840, close: 1.0870 },
+  { time: 1755000660, open: 1.0870, high: 1.0890, low: 1.0860, close: 1.0885 }
+];
 
-createChart();
+candleSeries.setData(candles);
+
+chart.timeScale().fitContent();
+
+window.addEventListener("resize", () => {
+  chart.applyOptions({
+    width: chartElement.clientWidth,
+    height: chartElement.clientHeight
+  });
+});

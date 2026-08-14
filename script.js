@@ -13,6 +13,7 @@ function createChart() {
 
     layout: {
       background: {
+        type: "solid",
         color: "#101622"
       },
       textColor: "#9aa6ba"
@@ -38,14 +39,17 @@ function createChart() {
     }
   });
 
-  candleSeries = chart.addCandlestickSeries({
-    upColor: "#20e889",
-    downColor: "#ff5577",
-    borderUpColor: "#20e889",
-    borderDownColor: "#ff5577",
-    wickUpColor: "#20e889",
-    wickDownColor: "#ff5577"
-  });
+  candleSeries = chart.addSeries(
+    LightweightCharts.CandlestickSeries,
+    {
+      upColor: "#20e889",
+      downColor: "#ff5577",
+      borderUpColor: "#20e889",
+      borderDownColor: "#ff5577",
+      wickUpColor: "#20e889",
+      wickDownColor: "#ff5577"
+    }
+  );
 
   candleSeries.setData(generateDemoCandles());
 
@@ -70,8 +74,7 @@ function generateDemoCandles() {
     const movement =
       (Math.random() - 0.5) * 0.004;
 
-    const close =
-      open + movement;
+    const close = open + movement;
 
     const high =
       Math.max(open, close) +
@@ -83,10 +86,10 @@ function generateDemoCandles() {
 
     candles.push({
       time: now - (80 - i) * 60,
-      open: open,
-      high: high,
-      low: low,
-      close: close
+      open: Number(open.toFixed(5)),
+      high: Number(high.toFixed(5)),
+      low: Number(low.toFixed(5)),
+      close: Number(close.toFixed(5))
     });
 
     price = close;
@@ -96,39 +99,33 @@ function generateDemoCandles() {
 }
 
 
-/* Market */
+/* Market change */
 
 document.getElementById("market")
   .addEventListener("change", function () {
 
-    const market =
+    document.getElementById("selectedMarket")
+      .textContent =
       this.options[this.selectedIndex].text;
-
-    document.getElementById(
-      "selectedMarket"
-    ).textContent = market;
 
     createChart();
   });
 
 
-/* Timeframe */
+/* Timeframe change */
 
 document.getElementById("timeframe")
   .addEventListener("change", function () {
 
-    const timeframe =
+    document.getElementById("selectedTimeframe")
+      .textContent =
       this.options[this.selectedIndex].text;
-
-    document.getElementById(
-      "selectedTimeframe"
-    ).textContent = timeframe;
 
     createChart();
   });
 
 
-/* Responsive chart */
+/* Resize */
 
 window.addEventListener("resize", function () {
 

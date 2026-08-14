@@ -1,99 +1,149 @@
-let countdownTimer;
-let currentSignal = null;
+const chartElement = document.getElementById("chart");
 
-function testBuy() {
-  showSignal("BUY", "Bullish Pattern", 87);
-}
+let chart;
+let candleSeries;
 
-function testSell() {
-  showSignal("SELL", "Bearish Pattern", 84);
-}
+function createChart() {
 
-function showSignal(type, pattern, earlyPercent) {
-  clearInterval(countdownTimer);
+  chartElement.innerHTML = "";
 
-  currentSignal = type;
+  chart = LightweightCharts.createChart(chartElement, {
+    width: chartElement.clientWidth,
+    height: chartElement.clientHeight,
 
-  const signal = document.getElementById("signal");
-  const patternText = document.getElementById("pattern");
-  const earlyMatch = document.getElementById("earlyMatch");
-  const countdown = document.getElementById("countdown");
-  const finalMatch = document.getElementById("finalMatch");
-  const confirmation = document.getElementById("confirmation");
+    layout: {
+      background: {
+        color: "#101622"
+      },
+      textColor: "#9aa6ba"
+    },
 
-  // Early signal
-  signal.textContent = type === "BUY" ? "🟢 EARLY BUY" : "🔴 EARLY SELL";
-  signal.style.color = type === "BUY" ? "#25e58a" : "#ff5577";
-
-  patternText.textContent = pattern;
-  earlyMatch.textContent = "Early Match: " + earlyPercent + "%";
-
-  finalMatch.textContent = "Final Match: --%";
-  confirmation.textContent = "Waiting for candle close...";
-
-  // Sound
-  playSound();
-
-  // Vibration
-  if (navigator.vibrate) {
-    navigator.vibrate([300, 150, 300]);
-  }
-
-  // 5 second countdown
-  let seconds = 5;
-  countdown.textContent = "Candle closes in: " + seconds + "s";
-
-  countdownTimer = setInterval(() => {
-    seconds--;
-
-    if (seconds > 0) {
-      countdown.textContent = "Candle closes in: " + seconds + "s";
-    } else {
-      clearInterval(countdownTimer);
-
-      // Demo final percentage
-      const finalPercent =
-        Math.floor(Math.random() * 21) + 80;
-
-      finalMatch.textContent =
-        "Final Match: " + finalPercent + "%";
-
-      if (finalPercent === 100) {
-        confirmation.textContent = "✅ 100% CONFIRMED";
-      } else {
-        confirmation.textContent =
-          "Pattern Match: " + finalPercent + "%";
+    grid: {
+      vertLines: {
+        color: "#1b2433"
+      },
+      horzLines: {
+        color: "#1b2433"
       }
+    },
+
+    rightPriceScale: {
+      borderColor: "#293448"
+    },
+
+    timeScale: {
+      borderColor: "#293448",
+      timeVisible: true,
+      secondsVisible: false
     }
-  }, 1000);
+  });
+
+  candleSeries = chart.addCandlestickSeries({
+    upColor: "#20e889",
+    downColor: "#ff5577",
+    borderUpColor: "#20e889",
+    borderDownColor: "#ff5577",
+    wickUpColor: "#20e889",
+    wickDownColor: "#ff5577"
+  });
+
+  candleSeries.setData(generateDemoCandles());
+
+  chart.timeScale().fitContent();
 }
 
-// Simple alert sound
-function playSound() {
-  try {
-    const audioContext =
-      new (window.AudioContext || window.webkitAudioContext)();
 
-    const oscillator = audioContext.createOscillator();
-    const gain = audioContext.createGain();
+/* Demo candles */
 
-    oscillator.connect(gain);
-    gain.connect(audioContext.destination);
+function generateDemoCandles() {
 
-    oscillator.frequency.value = 850;
-    oscillator.type = "sine";
+  const candles = [];
 
-    gain.gain.setValueAtTime(
-      0.3,
-      audioContext.currentTime
-    );
+  let price = 1.0850;
 
-    oscillator.start();
+  const now = Math.floor(Date.now() / 1000);
 
-    oscillator.stop(
-      audioContext.currentTime + 0.25
-    );
-  } catch (error) {
-    console.log("Sound unavailable");
+  for (let i = 0; i < 80; i++) {
+
+    const open = price;
+
+    const movement =
+      (Math.random() - 0.5) * 0.004;
+
+    const close =
+      open + movement;
+
+    const high =
+      Math.max(open, close) +
+      Math.random() * 0.0015;
+
+    const low =
+      Math.min(open, close) -
+      Math.random() * 0.0015;
+
+    candles.push({
+      time: now - (80 - i) * 60,
+      open: open,
+      high: high,
+      low: low,
+      close: close
+    });
+
+    price = close;
   }
+
+  return candles;
 }
+
+
+/* Market */
+
+document.getElementById("market")
+  .addEventListener("change", function () {
+
+    const market =
+      this.options[this.selectedIndex].text;
+
+    document.getElementById(
+      "selectedMarket"
+    ).textContent = market;
+
+    createChart();
+  });
+
+
+/* Timeframe */
+
+document.getElementById("timeframe")
+  .addEventListener("change", function () {
+
+    const timeframe =
+      this.options[this.selectedIndex].text;
+
+    document.getElementById(
+      "selectedTimeframe"
+    ).textContent = timeframe;
+
+    createChart();
+  });
+
+
+/* Responsive chart */
+
+window.addEventListener("resize", function () {
+
+  if (chart) {
+
+    chart.applyOptions({
+      width: chartElement.clientWidth,
+      height: chartElement.clientHeight
+    });
+
+  }
+
+});
+
+
+/* Start */
+
+createChart();

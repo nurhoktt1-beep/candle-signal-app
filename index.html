@@ -1,1 +1,57 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candle Signal</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>⚡ Candle Signal</h1>
+    <span class="status">● LIVE</span>
+  </header>
+
+  <main>
+
+    <section class="chart-box">
+      <div class="chart-header">
+        <span>EUR/USD</span>
+        <span>1M</span>
+      </div>
+
+      <div id="chart">
+        <div class="chart-message">
+          🕯️ Candlestick Chart
+          <small>Waiting for live data...</small>
+        </div>
+      </div>
+
+      <div class="signal-box">
+        <div id="signal">WAITING</div>
+        <div id="pattern">No pattern detected</div>
+        <div id="earlyMatch">Early Match: --%</div>
+        <div id="countdown">Next signal: --</div>
+      </div>
+    </section>
+
+    <section class="result-box">
+      <h2>Final Result</h2>
+      <div id="finalMatch">Final Match: --%</div>
+      <div id="confirmation">Waiting for candle close...</div>
+    </section>
+
+    <section class="controls">
+      <button onclick="testBuy()">🟢 Test BUY</button>
+      <button onclick="testSell()">🔴 Test SELL</button>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+
+</body>
+</html>

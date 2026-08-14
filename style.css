@@ -1,1 +1,162 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
+body {
+  background: #0b0f18;
+  color: #ffffff;
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+}
+
+header {
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+  background: #111725;
+  border-bottom: 1px solid #252d40;
+}
+
+header h1 {
+  font-size: 20px;
+}
+
+.status {
+  color: #25e58a;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+main {
+  max-width: 900px;
+  margin: auto;
+  padding: 15px;
+}
+
+.chart-box {
+  background: #111725;
+  border: 1px solid #252d40;
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.chart-header {
+  height: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 15px;
+  border-bottom: 1px solid #252d40;
+  color: #b9c2d3;
+}
+
+#chart {
+  height: 420px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:
+    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 45px 45px;
+}
+
+.chart-message {
+  text-align: center;
+  color: #778198;
+  font-size: 20px;
+}
+
+.chart-message small {
+  display: block;
+  margin-top: 8px;
+  font-size: 12px;
+}
+
+.signal-box {
+  text-align: center;
+  padding: 18px;
+  border-top: 1px solid #252d40;
+}
+
+#signal {
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+#pattern {
+  color: #b9c2d3;
+  margin-bottom: 8px;
+}
+
+#earlyMatch {
+  font-size: 16px;
+  color: #ffd166;
+}
+
+#countdown {
+  margin-top: 8px;
+  color: #778198;
+  font-size: 13px;
+}
+
+.result-box {
+  margin-top: 15px;
+  padding: 20px;
+  text-align: center;
+  background: #111725;
+  border: 1px solid #252d40;
+  border-radius: 14px;
+}
+
+.result-box h2 {
+  font-size: 17px;
+  margin-bottom: 12px;
+}
+
+#finalMatch {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#confirmation {
+  margin-top: 8px;
+  color: #8d98ad;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+button {
+  flex: 1;
+  padding: 15px;
+  border: 0;
+  border-radius: 10px;
+  background: #20283a;
+  color: white;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(.98);
+}
+
+@media (max-width: 600px) {
+  #chart {
+    height: 350px;
+  }
+
+  header h1 {
+    font-size: 17px;
+  }
+}

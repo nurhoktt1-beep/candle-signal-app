@@ -37,7 +37,7 @@ main {
   padding: 14px;
 }
 
-/* Selectors */
+/* Market + Timeframe */
 
 .selectors {
   display: flex;
@@ -89,29 +89,8 @@ main {
 }
 
 #chart {
+  width: 100%;
   height: 430px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background:
-    linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
-
-  background-size: 45px 45px;
-}
-
-.chart-message {
-  text-align: center;
-  color: #78849a;
-  font-size: 20px;
-}
-
-.chart-message small {
-  display: block;
-  margin-top: 8px;
-  font-size: 12px;
 }
 
 /* Signal */
@@ -146,7 +125,7 @@ main {
   margin-top: 8px;
 }
 
-/* Final result */
+/* Final */
 
 .result-box {
   margin-top: 12px;

@@ -16,15 +16,15 @@ function createChart() {
         type: "solid",
         color: "#101622"
       },
-      textColor: "#9aa6ba"
+      textColor: "#b8c2d4"
     },
 
     grid: {
       vertLines: {
-        color: "#1b2433"
+        color: "#242d3d"
       },
       horzLines: {
-        color: "#1b2433"
+        color: "#242d3d"
       }
     },
 
@@ -51,41 +51,33 @@ function createChart() {
     }
   );
 
-  candleSeries.setData(generateDemoCandles());
+  const data = [];
 
-  chart.timeScale().fitContent();
-}
+  let price = 1.08500;
 
-
-/* Demo candles */
-
-function generateDemoCandles() {
-
-  const candles = [];
-
-  let price = 1.0850;
-
-  const now = Math.floor(Date.now() / 1000);
+  // Fixed minute-based timestamps
+  const startTime =
+    Math.floor(Date.now() / 60000) * 60 - (80 * 60);
 
   for (let i = 0; i < 80; i++) {
 
     const open = price;
 
-    const movement =
-      (Math.random() - 0.5) * 0.004;
+    const change =
+      (Math.random() - 0.5) * 0.0020;
 
-    const close = open + movement;
+    const close = open + change;
 
     const high =
       Math.max(open, close) +
-      Math.random() * 0.0015;
+      Math.random() * 0.0008;
 
     const low =
       Math.min(open, close) -
-      Math.random() * 0.0015;
+      Math.random() * 0.0008;
 
-    candles.push({
-      time: now - (80 - i) * 60,
+    data.push({
+      time: startTime + (i * 60),
       open: Number(open.toFixed(5)),
       high: Number(high.toFixed(5)),
       low: Number(low.toFixed(5)),
@@ -95,34 +87,38 @@ function generateDemoCandles() {
     price = close;
   }
 
-  return candles;
+  candleSeries.setData(data);
+
+  chart.timeScale().fitContent();
 }
 
 
-/* Market change */
+/* Market */
 
-document.getElementById("market")
-  .addEventListener("change", function () {
+document.getElementById("market").addEventListener(
+  "change",
+  function () {
 
-    document.getElementById("selectedMarket")
-      .textContent =
+    document.getElementById("selectedMarket").textContent =
       this.options[this.selectedIndex].text;
 
     createChart();
-  });
+  }
+);
 
 
-/* Timeframe change */
+/* Timeframe */
 
-document.getElementById("timeframe")
-  .addEventListener("change", function () {
+document.getElementById("timeframe").addEventListener(
+  "change",
+  function () {
 
-    document.getElementById("selectedTimeframe")
-      .textContent =
+    document.getElementById("selectedTimeframe").textContent =
       this.options[this.selectedIndex].text;
 
     createChart();
-  });
+  }
+);
 
 
 /* Resize */
@@ -130,12 +126,10 @@ document.getElementById("timeframe")
 window.addEventListener("resize", function () {
 
   if (chart) {
-
-    chart.applyOptions({
-      width: chartElement.clientWidth,
-      height: chartElement.clientHeight
-    });
-
+    chart.resize(
+      chartElement.clientWidth,
+      chartElement.clientHeight
+    );
   }
 
 });
